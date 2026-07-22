@@ -1,8 +1,11 @@
-package com.jobapprest.jobapprest;
+package com.jobapprest.jobapprest.controller;
 
 import com.jobapprest.jobapprest.model.JobPost;
 import com.jobapprest.jobapprest.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,9 +16,13 @@ public class JobRestController {
     @Autowired
     private JobService jobService;
 
+    private final int PAGE_SIZE= 3;
+
     @GetMapping("jobPosts")
-    public List<JobPost> getAllJobs() {
-        return jobService.getAllJobs();
+    public Page<JobPost> getAllJobs(@RequestParam(defaultValue = "postId") String sortby, @RequestParam(defaultValue = "0") int page) {
+      //  return jobService.findBy(Sort.by(sortby));
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+        return jobService.getAllJobs(pageable);
     }
 
     @GetMapping("jobPost/{postId}")
@@ -50,6 +57,14 @@ public class JobRestController {
         jobService.load();
         return "success";
     }
+
+   @GetMapping("sorted")
+    public List<JobPost> getSortedJobs() {
+        return jobService.findByOrderByReqExperience();
+   }
+
+
+
 
 
 }

@@ -3,6 +3,7 @@ package com.jobapprest.jobapprest.repo;
 
 
 import com.jobapprest.jobapprest.model.JobPost;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,12 +11,13 @@ import java.util.List;
 
 @Repository
 public interface JobRepo extends JpaRepository<JobPost,Integer> {
-    List<JobPost> findByPostProfileContainingOrPostDescContaining( String postProfile, String postDesc);
+    List<JobPost> findByPostProfileContainingOrPostDescContainingIgnoreCase( String postProfile, String postDesc);
 
+    List<JobPost> findByOrderByReqExperience();
 
+    List<JobPost> findBy(Sort sortby);
 
-
-//    // ArrayList to store JobPost objects
+    //    // ArrayList to store JobPost objects
 //    List<JobPost> jobs = new ArrayList<>(Arrays.asList(
 //
 //            new JobPost(1, "Java Developer", "Must have good experience in core Java and advanced Java", 2,

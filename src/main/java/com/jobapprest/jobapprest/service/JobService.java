@@ -4,6 +4,9 @@ package com.jobapprest.jobapprest.service;
 import com.jobapprest.jobapprest.model.JobPost;
 import com.jobapprest.jobapprest.repo.JobRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,17 +17,16 @@ import java.util.List;
 public class JobService {
 
 
-
-
     @Autowired
     private JobRepo jobRepo;
 
-    public void  addJob(JobPost jobPost){
+    public void addJob(JobPost jobPost) {
         jobRepo.save(jobPost);
     }
-     public List<JobPost> getAllJobs(){
-        return jobRepo.findAll();
-     }
+
+    public Page<JobPost> getAllJobs( Pageable pageable) {
+        return jobRepo.findAll(Pageable.unpaged());
+    }
 
     public JobPost getJobByid(int postId) {
         return jobRepo.findById(postId).orElse(new JobPost());
@@ -67,6 +69,15 @@ public class JobService {
     }
 
     public List<JobPost> search(String keyword) {
-        return jobRepo.findByPostProfileContainingOrPostDescContaining(keyword,keyword);
+        return jobRepo.findByPostProfileContainingOrPostDescContainingIgnoreCase(keyword, keyword);
+    }
+
+
+    public List<JobPost> findByOrderByReqExperience() {
+        return jobRepo.findByOrderByReqExperience();
+    }
+
+    public List<JobPost> findBy(Sort sortby) {
+        return jobRepo.findBy(sortby);
     }
 }
