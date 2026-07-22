@@ -1,26 +1,22 @@
 package com.jobapprest.jobapprest.service;
 
 
-import com.jobapprest.jobapprest.model.User;
 import com.jobapprest.jobapprest.dto.SignUpDto;
 import com.jobapprest.jobapprest.dto.UserDto;
+import com.jobapprest.jobapprest.model.User;
 import com.jobapprest.jobapprest.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Type;
-import java.util.Optional;
 @Service
 @RequiredArgsConstructor
-public class UserService  implements UserDetailsService {
+public class UserService implements UserDetailsService {
     @Autowired
     private final ModelMapper modelMapper;
     private final UserRepo userRepo;
@@ -33,7 +29,7 @@ public class UserService  implements UserDetailsService {
     public UserDto signUp(SignUpDto signUpDto) {
 
        User toBeCreated = modelMapper.map(signUpDto, User.class);
-    //  toBeCreated.setPassword(encoder.encode(toBeCreated.getPassword()));
+       toBeCreated.setPassword(encoder.encode(toBeCreated.getPassword()));
        User savedUser = userRepo.save(toBeCreated);
        return modelMapper.map( savedUser, UserDto.class);
 
@@ -42,7 +38,7 @@ public class UserService  implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return (UserDetails) userRepo.findByName(username)
+        return userRepo.findByEmail(username)
                 .orElseThrow(()-> new UsernameNotFoundException("user not found"));
     }
 
