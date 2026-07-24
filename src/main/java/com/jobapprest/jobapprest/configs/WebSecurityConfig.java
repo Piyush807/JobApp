@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -32,6 +33,7 @@ public class WebSecurityConfig {
                         .anyRequest().authenticated())
                 .sessionManagement(sessionConfig -> sessionConfig
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .oauth2Login(Customizer.withDefaults())
                 .addFilterBefore(jwtAuthFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
