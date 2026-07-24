@@ -13,11 +13,14 @@ class JobAppRestApplicationTests {
 
     @Test
     void contextLoads() {
-        User user = new User(5,"Piyush","admin","piyush@mail.com");
-        String token = jwtService.generateToken(user);
-        System.out.println(token);
-        int id = jwtService.getUserIdFromToken(token);
-        System.out.println(id);
+        System.out.println("GOOGLE_CLIENT_ID = " + System.getenv("GOOGLE_CLIENT_ID"));
+        System.out.println("GOOGLE_CLIENT_SECRET = " + System.getenv("GOOGLE_CLIENT_SECRET"));
+        System.out.println("GOOGLE_CLIENT_SECRET = " + System.getenv("GITHUB_CLIENT_ID"));
+        System.out.println("GOOGLE_CLIENT_SECRET = " + System.getenv("GITHUB_CLIENT_SECRET"));
+
     }
+
+
+
 
 }
